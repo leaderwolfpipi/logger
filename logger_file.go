@@ -10,20 +10,21 @@ import (
  * 生成回滚日志实例
  */
 func NewRotateFileLogger(dir string) *RotateFileLogger {
-	l := &RotateFileLogger{}
 	// 设置日志的默认参数
+	l := &RotateFileLogger{}
+	l.fileNameFormatFunc = l.DefaultFileNameFormat
+	l.logFormatFunc = l.DefaultLogFormatFunc
+	l.newFileGapTime = 0
+	l.lastFileTime = time.Now()
 	file, err := l.createLogFile(l.fileNameFormatFunc(l.lastFileTime))
 	if err != nil {
 		panic(err)
 		return nil
 	}
 	l.file = file
-	l.Logger.out = file // 设置输出
 	l.dirPath = dir     // 日志目录
-	l.fileNameFormatFunc = l.DefaultFileNameFormat
-	l.logFormatFunc = l.DefaultLogFormatFunc
-	l.newFileGapTime = 0
-	l.lastFileTime = time.Now()
+	l.Logger.out = file // 设置输出
+
 	return l
 }
 
@@ -42,9 +43,6 @@ type RotateFileLogger struct {
 var _ ILogger = &RotateFileLogger{}
 
 func (l *RotateFileLogger) Start() {
-	l.mu.Lock()
-	defer l.mu.Unlock()
-
 	// 初始化日志
 	l.Logger.Start()
 }
@@ -109,7 +107,7 @@ func (l *RotateFileLogger) DefaultLogFormatFunc(logType LogType, i interface{}) 
 		}
 
 		l.file = file
-		l.out = file
+		l.Logger.out = file
 	}
 
 	// 计算日期格式

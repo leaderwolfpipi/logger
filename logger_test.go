@@ -6,7 +6,7 @@ import (
 	// "log"
 	"testing"
 
-	"github.com/pxlh007/logger"
+	"github.com/whitewolfpipi/logger"
 )
 
 // go test -test.bench=".*" -run=none  -test.benchmem  -benchtime=3s
@@ -30,13 +30,13 @@ func BenchmarkLogger(b *testing.B) {
 	//		"/hello",
 	//	}
 
-	ss := "200 | ok! | 1.053µs | GET  /PONG "
+	s := "200 | ok! | 1.053µs | GET  /PONG "
 
 	// 循环执行测试代码
 	for i := 0; i < b.N; i++ {
 		// 这里书写测试代码
 		// log.Println(ss)
-		l.Info(ss)
+		l.Info(s)
 		// lf.Info(s)
 	}
 

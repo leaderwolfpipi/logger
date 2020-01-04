@@ -117,7 +117,9 @@ func NewLogger() *Logger {
 	logger.cache.duration = 100 // 缓存同步周期
 	logger.cache.cacheCap = 128 // 缓存容量
 	logger.queueSize = 100000   // 默认队列大小1000000
+	logger.logLevel = DEBUG     // 设置默认级别
 	logger.cache.data = make([]string, 0, logger.cache.cacheCap)
+	logger.logFormatFunc = logger.DefaultLogFormatFunc
 
 	return logger
 }
@@ -131,8 +133,6 @@ func GetLogTypeString(t LogType) string {
 func (l *Logger) Start() {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	l.logFormatFunc = l.DefaultLogFormatFunc
-	l.logLevel = DEBUG
 
 	// 关闭缓存
 	if !l.cache.use {
@@ -165,6 +165,7 @@ func (l *Logger) Start() {
 
 	// 使用缓存
 	timer := time.NewTicker(time.Millisecond * l.cache.duration)
+
 	go func() {
 		// 实现异步写日志
 		for {
@@ -371,18 +372,18 @@ func (l *Logger) flush() error {
 	// 获取缓存数据
 	l.cache.mutex.Lock()
 	cache := l.cache.data
-	// l.cache.data = l.cache.data[0:0]
-	l.cache.data = make([]string, 0, l.cache.cacheCap)
+	l.cache.data = l.cache.data[0:0] // 极大的节省空间分配减轻垃圾回收压力
+	// l.cache.data = make([]string, 0, l.cache.cacheCap)
 	l.cache.mutex.Unlock()
 
 	if len(cache) == 0 {
 		return nil
 	}
 
-	_, err := io.WriteString(os.Stdout, strings.Join(cache, ""))
+	_, err := io.WriteString(l.out, strings.Join(cache, ""))
 	if err != nil {
 		// 重试
-		_, err := io.WriteString(os.Stdout, strings.Join(cache, ""))
+		_, err := io.WriteString(l.out, strings.Join(cache, ""))
 		if err != nil {
 			panic(err)
 		}

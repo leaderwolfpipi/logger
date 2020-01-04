@@ -8,7 +8,7 @@ logger日志组件
 > 3.减少fmt家族函数的使用
 > 4.使用缓存记录日志
 
-```
+```code
 package main
 
 import (
@@ -71,4 +71,18 @@ func main() {
 	lf.Error(sferror)
 
 }
+
 ```
+
+#### 基准测试结果
+
+```
+JonahdeMacBook-Pro:logger jonah$ go test -test.bench=".*" -run=none  -test.benchmem  -benchtime=1s
+goos: darwin
+goarch: amd64
+pkg: whitewolfpipi/logger/logger
+BenchmarkLogger-8        1000000              1157 ns/op             438 B/op          8 allocs/op
+PASS
+ok      whitewolfpipi/logger/logger     1.186s
+```
+ 
