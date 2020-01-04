@@ -8,7 +8,7 @@ logger日志组件
 > 3.减少fmt家族函数的使用
 > 4.使用缓存记录日志
 
-```code
+```go
 package main
 
 import (
@@ -76,7 +76,7 @@ func main() {
 
 #### 基准测试结果
 
-```
+```shell
 JonahdeMacBook-Pro:logger jonah$ go test -test.bench=".*" -run=none  -test.benchmem  -benchtime=1s
 goos: darwin
 goarch: amd64
