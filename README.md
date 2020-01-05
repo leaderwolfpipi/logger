@@ -77,12 +77,16 @@ func main() {
 #### 基准测试结果
 
 ```shell
-JonahdeMacBook-Pro:logger jonah$ go test -test.bench=".*" -run=none  -test.benchmem  -benchtime=1s
+
+$ go test -test.bench=".*" -run=none  -test.benchmem  -benchtime=1s
+
 goos: darwin
 goarch: amd64
 pkg: whitewolfpipi/logger/logger
 BenchmarkLogger-8        1000000              1157 ns/op             438 B/op          8 allocs/op
 PASS
+
 ok      whitewolfpipi/logger/logger     1.186s
+
 ```
  

@@ -17,7 +17,7 @@ func BenchmarkLogger(b *testing.B) {
 	// 初始化变量
 	// var l *logger.Logger = logger.NewLogger()
 	var l *logger.RotateFileLogger = logger.NewRotateFileLogger("./")
-	l.SetCacheSwitch(true)
+	l.SetCacheSwitch(false)
 	l.SetQueueSize(200000)
 	l.SetCacheDuration(100)
 	l.SetCacheCap(64)
