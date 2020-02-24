@@ -395,4 +395,5 @@ func (l *Logger) flush() error {
 // 兼容gorm日志实现Print
 func (l *Logger) Print(v interface{}) {
 	// @Todo...
+	panic("method not implement")
 }
