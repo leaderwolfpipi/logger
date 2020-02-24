@@ -391,3 +391,8 @@ func (l *Logger) flush() error {
 
 	return nil
 }
+
+// 兼容gorm日志实现Print
+func (l *Logger) Print() {
+	// @Todo...
+}

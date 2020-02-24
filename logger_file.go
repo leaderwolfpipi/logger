@@ -166,3 +166,8 @@ func (l *RotateFileLogger) DefaultLogFormatFunc(logType LogType, i interface{}) 
 
 	return format, values, true
 }
+
+// 兼容gorm日志实现Print
+func (l *RotateFileLogger) Print() {
+	// @Todo...
+}
