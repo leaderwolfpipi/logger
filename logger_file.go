@@ -168,7 +168,7 @@ func (l *RotateFileLogger) DefaultLogFormatFunc(logType LogType, i interface{}) 
 }
 
 // 兼容gorm日志实现Print
-func (l *RotateFileLogger) Print(v interface{}) {
+func (l *RotateFileLogger) Print(v ...interface{}) {
 	// @Todo...
 	panic("method not implement")
 }

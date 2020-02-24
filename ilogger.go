@@ -14,5 +14,5 @@ type ILogger interface {
 	Warn(interface{})           // 打印warn日志
 	Error(interface{})          // 打印error日志
 	Fatal(interface{})          // 打印fatal日志
-	Print(interface{})          // 兼容gorm日志
+	Print(v ...interface{})     // 兼容gorm日志
 }
