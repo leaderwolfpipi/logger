@@ -396,5 +396,5 @@ func (l *Logger) flush() error {
 func (l *Logger) Print(v ...interface{}) {
 	// @Todo...
 	// panic("method not implement")
-	l.Info(v)
+	l.Info(v...)
 }

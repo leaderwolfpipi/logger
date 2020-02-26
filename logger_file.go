@@ -171,5 +171,5 @@ func (l *RotateFileLogger) DefaultLogFormatFunc(logType LogType, i interface{}) 
 func (l *RotateFileLogger) Print(v ...interface{}) {
 	// @Todo...
 	// panic("method not implement")
-	l.Info(v)
+	l.Info(v...)
 }
