@@ -344,6 +344,7 @@ func (l *Logger) log(logType LogType, i interface{}) {
 	}
 
 	format, data, isLog := l.logFormatFunc(logType, i)
+
 	if !isLog {
 		return
 	}
@@ -396,5 +397,5 @@ func (l *Logger) flush() error {
 func (l *Logger) Print(v ...interface{}) {
 	// @Todo...
 	// panic("method not implement")
-	l.Info(v...)
+	l.Fatal(v)
 }

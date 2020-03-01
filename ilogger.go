@@ -5,6 +5,8 @@ type FormatFunc func(LogType, interface{}) (string, []interface{}, bool)
 
 // 定义日志接口
 type ILogger interface {
+	Start()                     // 启动日志
+	SetCacheSwitch(use bool)    // 切换使用缓存
 	SetLogLevel(LogType)        // 设置日志级别
 	GetLogLevel() LogType       // 获取日志级别
 	SetLoggerFormat(FormatFunc) // 设置日志格式

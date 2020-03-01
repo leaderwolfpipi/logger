@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"fmt"
 	"os"
 	"runtime/debug"
 	"time"
@@ -16,13 +17,24 @@ func NewRotateFileLogger(dir string) *RotateFileLogger {
 	l.logFormatFunc = l.DefaultLogFormatFunc
 	l.newFileGapTime = 0
 	l.lastFileTime = time.Now()
+
+	// 设置缓存相关
+	l.Logger.cache.use = true     // 缓存开关
+	l.Logger.cache.duration = 100 // 缓存同步周期
+	l.Logger.cache.cacheCap = 128 // 缓存容量
+	l.Logger.queueSize = 100000   // 默认队列大小100000
+	l.dirPath = dir               // 日志目录
+
+	// 设置缓冲区域
+	l.Logger.cache.data = make([]string, 0, l.Logger.cache.cacheCap)
+
+	// 创建日志文件
 	file, err := l.createLogFile(l.fileNameFormatFunc(l.lastFileTime))
 	if err != nil {
 		panic(err)
 		return nil
 	}
-	l.file = file
-	l.dirPath = dir     // 日志目录
+	l.file = file       // 文件句柄
 	l.Logger.out = file // 设置输出
 
 	return l
@@ -42,11 +54,7 @@ type RotateFileLogger struct {
 // 声明接口实现者
 var _ ILogger = &RotateFileLogger{}
 
-func (l *RotateFileLogger) Start() {
-	// 初始化日志
-	l.Logger.Start()
-}
-
+// 设置窗口时间
 func (l *RotateFileLogger) SetNewFileGapTime(gapTime time.Duration) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
@@ -169,7 +177,9 @@ func (l *RotateFileLogger) DefaultLogFormatFunc(logType LogType, i interface{}) 
 
 // 兼容gorm日志实现Print
 func (l *RotateFileLogger) Print(v ...interface{}) {
-	// @Todo...
-	// panic("method not implement")
-	l.Info(v...)
+	// 记录gorm执行中的错误
+	for _, item := range v {
+		err := fmt.Sprintf("%s", item)
+		l.Fatal(err)
+	}
 }
